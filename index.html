@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>建议售价计算器</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2em;
+      max-width: 600px;
+      margin: auto;
+      background: #f8f8f8;
+    }
+    h1 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 1em;
+    }
+    input {
+      width: 100%;
+      padding: 0.5em;
+      margin-top: 0.5em;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 1.5em;
+      padding: 0.75em;
+      width: 100%;
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 2em;
+      font-size: 1.3em;
+      text-align: center;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>建议售价计算器</h1>
+
+  <label>总成本（¥）<input type="number" id="totalCost" value="210.5"></label>
+  <label>预期利润率（%）<input type="number" id="profitRate" value="30"></label>
+  <label>售后率（%）<input type="number" id="afterSaleRate" value="2"></label>
+
+  <button onclick="calculatePrice()">计算建议售价</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function calculatePrice() {
+      const cost = parseFloat(document.getElementById('totalCost').value);
+      const profit = parseFloat(document.getElementById('profitRate').value) / 100;
+      const aftersale = parseFloat(document.getElementById('afterSaleRate').value) / 100;
+
+      const price = cost / (1 - profit - aftersale);
+
+      const usdRate = 0.14;
+      const eurRate = 0.13;
+      const gbpRate = 0.11;
+
+      if (isFinite(price)) {
+        const usd = (price * usdRate).toFixed(2);
+        const eur = (price * eurRate).toFixed(2);
+        const gbp = (price * gbpRate).toFixed(2);
+
+        document.getElementById('result').innerHTML = `建议售价：¥${price.toFixed(2)}<br>` +
+          `≈ $${usd} 美元 / €${eur} 欧元 / £${gbp} 英镑`;
+      } else {
+        document.getElementById('result').innerText = '请输入有效的数值';
+      }
+    }
+  </script>
+</body>
+</html>
